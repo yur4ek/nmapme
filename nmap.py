@@ -25,6 +25,7 @@ class NMap(service.Service):
                     return p.stdout.read()
                 log.msg(p.stderr.read())
             except:
+                log.msg('call nmap error')
                 log.err()
             return 'server error'
 
@@ -58,7 +59,7 @@ components.registerAdapter(webAPI, INetworkScanner, resource.IResource)
 
 nmap = NMap()
 site = server.Site(resource.IResource(nmap))
-webServer = internet.TCPServer(80, site, interface='127.0.0.1')
+webServer = internet.TCPServer(80, site, interface='0.0.0.0')
 
 application = service.Application("nmapme")
 nmap.setServiceParent(application)
