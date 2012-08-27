@@ -1,11 +1,8 @@
 
 from twisted.application import service, internet
-from twisted.python import log, components
-from twisted.internet import reactor, defer, threads
 from twisted.internet.utils import getProcessOutput
+from twisted.python import log, components
 from twisted.web import server, resource
-from twisted.enterprise import adbapi
-from subprocess import Popen, PIPE
 from zope.interface import Interface, implements
 
 
