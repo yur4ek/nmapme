@@ -2,6 +2,7 @@
 from twisted.application import service, internet
 from twisted.python import log, components
 from twisted.internet import reactor, defer, threads
+from twisted.internet.utils import getProcessOutput
 from twisted.web import server, resource
 from twisted.enterprise import adbapi
 from subprocess import Popen, PIPE
@@ -17,19 +18,8 @@ class NMap(service.Service):
     implements(INetworkScanner)
 
     def scanIP(self, addr):
-        def scanner():
-            log.msg('nmap ', addr)
-            try:
-                p = Popen(['nmap','-sT', addr], stdout=PIPE, stderr=PIPE)
-                if p.wait() == 0:
-                    return p.stdout.read()
-                log.msg(p.stderr.read())
-            except:
-                log.err()
-            return 'server error'
-
-        return threads.deferToThread(scanner)
-
+        log.msg('nmap ', addr)
+        return getProcessOutput('nmap', ['-sT', addr])
 
 class webAPI(resource.Resource):
     isLeaf = True
